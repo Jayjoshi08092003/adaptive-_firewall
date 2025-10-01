@@ -1,0 +1,21 @@
+Decision Tree Rules derived from Student DistilBERT CLS Embeddings:
+(Class 0: Anomaly, Class 1: Normal, Class -1: ML Model Required)
+
+The rules below map the 768-dimensional CLS embedding vector to a rapid security decision.
+
+|--- CLS_Dim_512 <= 0.005  (General Benign Cluster)
+|   |--- CLS_Dim_120 <= -0.02
+|   |   |--- class: 1 (NORMAL - High Confidence ALLOW)
+|   |--- CLS_Dim_120 > -0.02
+|   |   |--- CLS_Dim_680 <= 0.01
+|   |   |   |--- class: 1 (NORMAL - High Confidence ALLOW)
+|   |   |--- CLS_Dim_680 > 0.01
+|   |   |   |--- class: -1 (ML MODEL REQUIRED - Ambiguous, proceed to DistilBERT)
+|--- CLS_Dim_512 > 0.005  (General Suspicious Cluster)
+|   |--- CLS_Dim_421 <= -0.01
+|   |   |--- CLS_Dim_33 <= 0.00
+|   |   |   |--- class: 0 (ANOMALY - High Confidence BLOCK)
+|   |   |--- CLS_Dim_33 > 0.00
+|   |   |   |--- class: -1 (ML MODEL REQUIRED - Ambiguous, proceed to DistilBERT)
+|   |--- CLS_Dim_421 > -0.01
+|   |   |--- class: 0 (ANOMALY - High Confidence BLOCK)
