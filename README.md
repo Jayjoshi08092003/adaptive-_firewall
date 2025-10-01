@@ -100,3 +100,5 @@ ALLOW
 High Confidence Normal
 
 The XAI Rule Filter accelerates this process by quickly resolving requests that fall clearly into the high-confidence BLOCK or ALLOW zones, avoiding the full ML model calculation when possible.
+UI:-
+Screenshot (14).png
