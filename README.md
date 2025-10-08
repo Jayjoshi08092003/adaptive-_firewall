@@ -1,104 +1,82 @@
-# adaptive-_firewall
-Adaptive WAF Simulator (DistilBERT + XAI)
-This project implements an Adaptive Web Application Firewall (WAF) Simulator using a two-stage machine learning architecture. It combines a powerful, deep-learning language model (DistilBERT) with explainable AI (XAI) rules derived from the model's feature space to create a WAF that is both highly accurate and highly performant.
+ [cite\_start]It rebrands the system as a **Hybrid WAAP (Web Application and API Protection) Simulator**, incorporating the RASP agent as the critical second layer of defense and directly addressing the limitations (False Negatives) identified in your synopsis[cite: 13, 14].
 
-The system is designed to produce three distinct outcomes for every request: BLOCK, ALLOW, or HUMAN REVIEW (for ambiguous, adaptive cases).
+-----
 
-🛡️ Key Features
-Two-Stage Architecture: Requests are first processed by a Fast XAI Rule Filter (for high-confidence decisions) and only passed to the Full DistilBERT ML Model if the outcome is ambiguous.
+# 🛡️⚛️ Hybrid WAAP Simulator (Adaptive WAF + Conceptual RASP)
 
-Explainable AI (XAI): Uses a simple Decision Tree (extracted from the deep learning model's feature space) for instant, explainable, and high-confidence filtering.
+This project implements a cutting-edge **Hybrid Web Application and API Protection (WAAP) Simulator**. It integrates a high-accuracy, deep-learning perimeter defense (the Adaptive WAF) with an in-application execution monitor (the Conceptual RASP Agent) to provide comprehensive protection against both known attack patterns and zero-day execution flaws.
 
-Adaptive Thresholds: Implements a Human Review Queue for requests falling into the ambiguous probability range (e.g., 0.50≤Score≤0.95), facilitating continuous model improvement and adaptation.
+[cite\_start]The system is designed to provide **Adaptive Resilience** [cite: 38] [cite\_start]by having a self-learning WAF that is backed by a final, un-bypassable RASP layer, resulting in a robust, self-learning prototype[cite: 36].
 
-Single-File Flask App: The core WAF logic is contained within a single app.py file for easy deployment and testing.
+## 🛡️ Key Hybrid Features
 
-🚀 Project Structure
-adaptive waf/
-├── app.py                      # Flask application and WAF prediction logic
-├── best_student_waf_model.pt   # **Trained PyTorch Model Checkpoint** (Required)
-├── waf_xai_rules.txt           # **XAI Decision Tree Rules** (Required for Fast Filter)
-└── README.md                   # This file
+  * **Two-Stage Hybrid Architecture (WAAP):** The system implements a complete defense chain:
+    1.  [cite\_start]**Stage 1 (Perimeter):** The Adaptive WAF (DistilBERT + XAI Rules) classifies the HTTP request based on its payload and headers[cite: 17].
+    2.  [cite\_start]**Stage 2 (Execution):** If the WAF **ALLOWS** the request, the **Conceptual RASP Agent** monitors the application's critical functions, blocking malicious code *before* it executes[cite: 16].
+  * [cite\_start]**RASP for False Negative (FN) Mitigation:** The RASP layer is the primary defense against the **41 False Negatives** [cite: 13, 33] recorded by the WAF model, ensuring protection against obfuscated payloads that bypass the perimeter defense.
+  * [cite\_start]**Adaptive Human-in-the-Loop (HITL):** Requests with ambiguous scores ($\mathbf{0.50 \le S \le 0.95}$) are routed for human review [cite: 19][cite\_start], enabling continuous model retraining and rapid patching of the static rules[cite: 21, 34].
+  * [cite\_start]**High Performance:** Uses the efficient **DistilBERT** variant to ensure real-time response times[cite: 32].
 
-⚙️ Installation and Setup
-1. Prerequisites
-Python 3.10 or higher (Python 3.11 was used during development)
+## 🚀 Project Structure
 
-pip for package management
+The RASP logic is conceptually integrated directly into the `app.py` as Python decorators and policy checks on a simulated sensitive function.
 
-2. Clone Repository & Navigate
-First, navigate to your desired directory and clone this project:
+```
+hybrid_waap/
+├── app.py                      # Flask application, WAF prediction, and RASP logic
+├── best_student_waf_model.pt   # **Trained PyTorch Model Checkpoint** (WAF ML)
+├── waf_xai_rules.txt           # **XAI Decision Tree Rules** (WAF Fast Filter)
+└── README.md
+```
 
-git clone [YOUR_REPOSITORY_URL]
-cd adaptive\ waf
+## ⚙️ Installation and Setup
 
-3. Create and Activate Virtual Environment
-It is highly recommended to use a virtual environment to manage dependencies.
+1.  **Prerequisites:** Python 3.10+ (Python 3.11 was used during development).
+2.  **Dependencies:** Install all necessary libraries:
+    ```bash
+    (venv) pip install flask numpy torch transformers scikit-learn
+    ```
+3.  **Model Files:** The application requires the trained model files (`best_student_waf_model.pt` and `waf_xai_rules.txt`). If these files are missing, the WAF will fail to initialize and switch to a rule-based **DEMO MODE**.
 
-# Create the environment
-python -m venv venv
+## ▶️ Running the WAAP Simulator
 
-# Activate the environment (using PowerShell)
-.\venv\Scripts\Activate.ps1
+Start the Flask server:
 
-# OR Activate the environment (using Command Prompt/CMD)
-venv\Scripts\activate
-
-4. Install Dependencies
-Install all necessary libraries, including PyTorch, Hugging Face transformers, and scikit-learn (which is needed to load the LabelEncoder saved in the model checkpoint):
-
-(venv) pip install flask numpy torch transformers scikit-learn
-
-⚠️ Critical Step: Model Files
-The application requires the trained model files to be present. Download the following files and place them directly into the root of the project directory (adaptive waf/):
-
-best_student_waf_model.pt
-
-waf_xai_rules.txt
-
-If these files are missing, the WAF will fail to initialize and show a "Model is not loaded" error.
-
-▶️ Running the WAF Simulator
-Once all dependencies and model files are installed, start the Flask server:
-
+```bash
 (venv) python app.py
+```
 
-The console output will confirm the model and XAI rules are loaded successfully, and provide the server URL:
+The console output will confirm the operating mode and provide the server URL:
 
-✅ WAF Model 'StudentDistilBERT' loaded successfully!
-✅ XAI Rules file 'waf_xai_rules.txt' found. Fast filter enabled.
-...
-* Running on [http://127.0.0.1:5000](http://127.0.0.1:5000)
+```
+============================================================
+🛡️ ⚛️ HYBRID WAAP SIMULATOR (WAF + RASP) STARTING
+============================================================
+Mode: DEMO (Simulated WAF rules for demonstration)
+Server: http://127.0.0.1:5000
+```
 
-Open your browser and navigate to http://127.0.0.1:5000 to access the WAF simulator interface.
+Open your browser and navigate to `http://127.0.0.1:5000` to access the simulator interface.
 
-🧠 WAF Decision Logic
-The app.py uses the following thresholds on the anomaly score (probability of attack, where 1.0 is highest confidence) to determine the action:
+## 🧠 WAAP Defense Chain Logic
 
-Anomaly Score (S)
+[cite\_start]The system functions as a sequential security pipeline, ensuring **Superior Security**[cite: 37]:
 
-Decision
+### Stage 1: Adaptive WAF Decision (Perimeter)
 
-Action
+The WAF (ML/XAI) filters traffic based on the anomaly score ($S$):
 
-S>0.95
+| Anomaly Score (S) | WAF Decision | Action | Next Step |
+| :--- | :--- | :--- | :--- |
+| **S \> 0.95** | **BLOCK** | High Confidence Attack | Traffic Dropped. **RASP is not engaged.** |
+| **0.50 ≤ S ≤ 0.95** | **HUMAN REVIEW** | Ambiguous/Adaptive Region | Traffic Dropped/Held. **RASP is not engaged.** |
+| **S \< 0.50** | **ALLOW** | High Confidence Normal | **Traffic passed to RASP layer.** |
 
-BLOCK
+### Stage 2: Conceptual RASP Policy (Execution)
 
-High Confidence Attack
+Only traffic that the WAF **ALLOWS** proceeds to the application backend, where the RASP agent provides the final check:
 
-0.50≤S≤0.95
-
-HUMAN REVIEW
-
-Ambiguous/Adaptive Region
-
-S<0.50
-
-ALLOW
-
-High Confidence Normal
-
-The XAI Rule Filter accelerates this process by quickly resolving requests that fall clearly into the high-confidence BLOCK or ALLOW zones, avoiding the full ML model calculation when possible.
-UI:-
-Screenshot (14).png
+| WAF Outcome | RASP Action (Conceptual) | Final Outcome | Security Benefit |
+| :--- | :--- | :--- | :--- |
+| **ALLOW** | **BLOCK** | **RASP BLOCK** | Catches WAF False Negatives/Bypass attempts. |
+| **ALLOW** | **ALLOW** | **FINAL ALLOW** | Request is clean at both the perimeter and execution layers. |
