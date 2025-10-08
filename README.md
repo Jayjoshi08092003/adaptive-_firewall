@@ -1,10 +1,10 @@
- [cite\_start]It rebrands the system as a **Hybrid WAAP (Web Application and API Protection) Simulator**, incorporating the RASP agent as the critical second layer of defense and directly addressing the limitations (False Negatives) identified in your synopsis[cite: 13, 14].
+ [cite\_start]It rebrands the system as a **Hybrid WAAP (Web Application and API Protection)**, incorporating the RASP agent as the critical second layer of defense and directly addressing the limitations (False Negatives) identified in your synopsis[cite: 13, 14].
 
 -----
 
-# 🛡️⚛️ Hybrid WAAP Simulator (Adaptive WAF + Conceptual RASP)
+# 🛡️⚛️ Hybrid WAAP (Adaptive WAF + Conceptual RASP)
 
-This project implements a cutting-edge **Hybrid Web Application and API Protection (WAAP) Simulator**. It integrates a high-accuracy, deep-learning perimeter defense (the Adaptive WAF) with an in-application execution monitor (the Conceptual RASP Agent) to provide comprehensive protection against both known attack patterns and zero-day execution flaws.
+This project implements a cutting-edge **Hybrid Web Application and API Protection (WAAP)**. It integrates a high-accuracy, deep-learning perimeter defense (the Adaptive WAF) with an in-application execution monitor (the Conceptual RASP Agent) to provide comprehensive protection against both known attack patterns and zero-day execution flaws.
 
 [cite\_start]The system is designed to provide **Adaptive Resilience** [cite: 38] [cite\_start]by having a self-learning WAF that is backed by a final, un-bypassable RASP layer, resulting in a robust, self-learning prototype[cite: 36].
 
