@@ -1,82 +1,93 @@
- [cite\_start]It rebrands the system as a **Hybrid WAAP (Web Application and API Protection)**, incorporating the RASP agent as the critical second layer of defense and directly addressing the limitations (False Negatives) identified in your synopsis[cite: 13, 14].
+Here is a professional, high-impact GitHub description template for your project. You can copy and paste this directly into your `README.md` file.
 
------
+---
 
-# 🛡️⚛️ Hybrid WAAP (Adaptive WAF + Conceptual RASP)
+# 🛡️ Hybrid WAAP Simulator: Adaptive WAF & Conceptual RASP
 
-This project implements a cutting-edge **Hybrid Web Application and API Protection (WAAP)**. It integrates a high-accuracy, deep-learning perimeter defense (the Adaptive WAF) with an in-application execution monitor (the Conceptual RASP Agent) to provide comprehensive protection against both known attack patterns and zero-day execution flaws.
+### *Next-Gen Zero-Day Defense using Cross-Attention Transformers & Runtime Protection*
 
-[cite\_start]The system is designed to provide **Adaptive Resilience** [cite: 38] [cite\_start]by having a self-learning WAF that is backed by a final, un-bypassable RASP layer, resulting in a robust, self-learning prototype[cite: 36].
+## 📖 Overview
 
-## 🛡️ Key Hybrid Features
+The **Hybrid WAAP (Web Application & API Protection) Simulator** is a dual-layer security framework designed to mitigate the "False Negative" problem in traditional WAFs.
 
-  * **Two-Stage Hybrid Architecture (WAAP):** The system implements a complete defense chain:
-    1.  [cite\_start]**Stage 1 (Perimeter):** The Adaptive WAF (DistilBERT + XAI Rules) classifies the HTTP request based on its payload and headers[cite: 17].
-    2.  [cite\_start]**Stage 2 (Execution):** If the WAF **ALLOWS** the request, the **Conceptual RASP Agent** monitors the application's critical functions, blocking malicious code *before* it executes[cite: 16].
-  * [cite\_start]**RASP for False Negative (FN) Mitigation:** The RASP layer is the primary defense against the **41 False Negatives** [cite: 13, 33] recorded by the WAF model, ensuring protection against obfuscated payloads that bypass the perimeter defense.
-  * [cite\_start]**Adaptive Human-in-the-Loop (HITL):** Requests with ambiguous scores ($\mathbf{0.50 \le S \le 0.95}$) are routed for human review [cite: 19][cite\_start], enabling continuous model retraining and rapid patching of the static rules[cite: 21, 34].
-  * [cite\_start]**High Performance:** Uses the efficient **DistilBERT** variant to ensure real-time response times[cite: 32].
+Unlike standard regex-based firewalls, this project fuses **Deep Learning (Perimeter Defense)** with **RASP (Execution Defense)** to create a self-healing security pipeline. It features a novel **"Inspector" Architecture**—a BERT-based model using **Cross-Attention** to scan distinct HTTP components (URL, Headers, Body) for subtle anomaly patterns, providing state-of-the-art detection with full explainability.
 
-## 🚀 Project Structure
+## 🚀 Key Innovation: The "Inspector" Architecture
 
-The RASP logic is conceptually integrated directly into the `app.py` as Python decorators and policy checks on a simulated sensitive function.
+Most AI WAFs treat an HTTP request as a single long string. We take a **Multi-View** approach:
 
-```
-hybrid_waap/
-├── app.py                      # Flask application, WAF prediction, and RASP logic
-├── best_student_waf_model.pt   # **Trained PyTorch Model Checkpoint** (WAF ML)
-├── waf_xai_rules.txt           # **XAI Decision Tree Rules** (WAF Fast Filter)
-└── README.md
-```
+1. **Segmentation:** The request is split into 8 independent feature columns (`Method`, `URL`, `User-Agent`, `Cookie`, `Body`, etc.).
+2. **The "Inspector" Query:** A learned, distinct vector (the "Inspector") uses **Cross-Attention** to scan these features simultaneously.
+3. **Explainability:** The model outputs **Attention Weights**, allowing us to visualize exactly *which* part of the request triggered the block (e.g., *"Blocked due to 98% suspicion in the User-Agent field"*).
 
-## ⚙️ Installation and Setup
+## 🏗️ System Architecture
 
-1.  **Prerequisites:** Python 3.10+ (Python 3.11 was used during development).
-2.  **Dependencies:** Install all necessary libraries:
-    ```bash
-    (venv) pip install flask numpy torch transformers scikit-learn
-    ```
-3.  **Model Files:** The application requires the trained model files (`best_student_waf_model.pt` and `waf_xai_rules.txt`). If these files are missing, the WAF will fail to initialize and switch to a rule-based **DEMO MODE**.
+### 🛡️ Layer 1: Adaptive WAF (Perimeter)
 
-## ▶️ Running the WAAP Simulator
+* **Model:** Distilled BERT (Student) trained via Knowledge Distillation from a `bert-base` Teacher.
+* **Mechanism:** Cross-Attention Transformer.
+* **Performance:** ~96.68% Accuracy on CSIC 2010 Dataset.
+* **Optimization:** Model size reduced from **440MB → ~110MB** for real-time inference.
 
-Start the Flask server:
+### 💉 Layer 2: Conceptual RASP (Internal)
 
+* **Mechanism:** Python Decorator-based instrumentation (`@rasp_policy_decorator`).
+* **Function:** Hooks into sensitive application functions (e.g., Database Queries).
+* **Defense:** Inspects payloads *at the point of execution*. If a sophisticated attack bypasses the WAF (Layer 1), the RASP agent catches the malicious SQL syntax before it executes.
+
+## 🛠️ Tech Stack
+
+* **Core AI:** PyTorch, Hugging Face Transformers (`bert-base-uncased`, `bert-small`).
+* **Backend:** Flask (Python).
+* **Data Processing:** Pandas, Scikit-Learn.
+* **Visualization:** Matplotlib, Seaborn (for Attention Heatmaps).
+* **Techniques:** Knowledge Distillation, Cross-Attention, Dynamic Quantization.
+
+## 📊 Results & Explainability
+
+The system provides real-time feedback on *why* a request was blocked.
+
+| Metric | Performance |
+| --- | --- |
+| **Accuracy** | 97.96% (Teacher), 96.68% (Student) |
+| **Inference Time** | < 20ms |
+| **Model Size** | 110 MB (Compressed) |
+
+**Sample Attention Output:**
+
+> *Request Blocked. The Inspector focused 92% attention on the `Payload` column containing SQL injection patterns.*
+
+## ⚡ Quick Start
+
+1. **Clone the Repository**
 ```bash
-(venv) python app.py
-```
-
-The console output will confirm the operating mode and provide the server URL:
+git clone https://github.com/yourusername/hybrid-waap-simulator.git
+cd hybrid-waap-simulator
 
 ```
-============================================================
-🛡️ ⚛️ HYBRID WAAP SIMULATOR (WAF + RASP) STARTING
-============================================================
-Mode: DEMO (Simulated WAF rules for demonstration)
-Server: http://127.0.0.1:5000
+
+
+2. **Install Dependencies**
+```bash
+pip install torch transformers flask pandas scikit-learn
+
 ```
 
-Open your browser and navigate to `http://127.0.0.1:5000` to access the simulator interface.
 
-## 🧠 WAAP Defense Chain Logic
+3. **Run the Simulator**
+```bash
+python app.py
 
-[cite\_start]The system functions as a sequential security pipeline, ensuring **Superior Security**[cite: 37]:
+```
 
-### Stage 1: Adaptive WAF Decision (Perimeter)
 
-The WAF (ML/XAI) filters traffic based on the anomaly score ($S$):
+*Access the dashboard at `http://localhost:5000*`
 
-| Anomaly Score (S) | WAF Decision | Action | Next Step |
-| :--- | :--- | :--- | :--- |
-| **S \> 0.95** | **BLOCK** | High Confidence Attack | Traffic Dropped. **RASP is not engaged.** |
-| **0.50 ≤ S ≤ 0.95** | **HUMAN REVIEW** | Ambiguous/Adaptive Region | Traffic Dropped/Held. **RASP is not engaged.** |
-| **S \< 0.50** | **ALLOW** | High Confidence Normal | **Traffic passed to RASP layer.** |
+## 🔮 Future Work
 
-### Stage 2: Conceptual RASP Policy (Execution)
+* **Reinforcement Learning:** allowing the RASP agent to auto-label blocked requests to retrain the WAF (Feedback Loop).
+* **GraphQL Support:** extending the tokenizer to handle nested GraphQL queries.
 
-Only traffic that the WAF **ALLOWS** proceeds to the application backend, where the RASP agent provides the final check:
+--- 
 
-| WAF Outcome | RASP Action (Conceptual) | Final Outcome | Security Benefit |
-| :--- | :--- | :--- | :--- |
-| **ALLOW** | **BLOCK** | **RASP BLOCK** | Catches WAF False Negatives/Bypass attempts. |
-| **ALLOW** | **ALLOW** | **FINAL ALLOW** | Request is clean at both the perimeter and execution layers. |
+*Created by [Your Name]*
