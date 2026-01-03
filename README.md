@@ -1,7 +1,3 @@
-Here is a professional, high-impact GitHub description template for your project. You can copy and paste this directly into your `README.md` file.
-
----
-
 # 🛡️ Hybrid WAAP Simulator: Adaptive WAF & Conceptual RASP
 
 ### *Next-Gen Zero-Day Defense using Cross-Attention Transformers & Runtime Protection*
@@ -89,5 +85,5 @@ python app.py
 * **GraphQL Support:** extending the tokenizer to handle nested GraphQL queries.
 
 --- 
-
+jay piyushbhai joshi
 *Created by [Your Name]*
